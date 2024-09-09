@@ -58,6 +58,7 @@ pub async fn is_export_missing(
         EcmascriptExports::None => return Ok(Vc::cell(true)),
         EcmascriptExports::Value => return Ok(Vc::cell(false)),
         EcmascriptExports::CommonJs => return Ok(Vc::cell(false)),
+        EcmascriptExports::EmptyCommonJs => return Ok(Vc::cell(false)),
         EcmascriptExports::DynamicNamespace => return Ok(Vc::cell(false)),
         EcmascriptExports::EsmExports(exports) => *exports,
     };
@@ -87,7 +88,9 @@ pub async fn is_export_missing(
             | EcmascriptExports::DynamicNamespace => {
                 return Ok(Vc::cell(false));
             }
-            EcmascriptExports::None | EcmascriptExports::EsmExports(_) => {}
+            EcmascriptExports::None
+            | EcmascriptExports::EmptyCommonJs
+            | EcmascriptExports::EsmExports(_) => {}
         }
     }
 
@@ -345,7 +348,7 @@ pub async fn expand_star_exports(
                     }
                 }
             }
-            EcmascriptExports::None => emit_star_exports_issue(
+            EcmascriptExports::None | EcmascriptExports::EmptyCommonJs => emit_star_exports_issue(
                 asset.ident(),
                 format!(
                     "export * used with module {} which has no exports\nTypescript only: Did you \
