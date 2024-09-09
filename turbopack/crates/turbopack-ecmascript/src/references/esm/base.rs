@@ -499,7 +499,7 @@ impl Issue for InvalidExport {
                 if let Some(did_you_mean) = did_you_mean {
                     StyledString::Line(vec![
                         StyledString::Text("Did you mean to import ".into()),
-                        StyledString::Code(did_you_mean.clone().into()),
+                        StyledString::Code(did_you_mean.clone()),
                         StyledString::Text("?".into()),
                     ])
                 } else {
