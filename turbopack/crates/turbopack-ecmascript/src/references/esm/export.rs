@@ -58,7 +58,7 @@ pub async fn is_export_missing(
         EcmascriptExports::None => return Ok(Vc::cell(true)),
         EcmascriptExports::Value => return Ok(Vc::cell(false)),
         EcmascriptExports::CommonJs => return Ok(Vc::cell(false)),
-        EcmascriptExports::EmptyCommonJs => return Ok(Vc::cell(false)),
+        EcmascriptExports::EmptyCommonJs => return Ok(Vc::cell(export_name != "default")),
         EcmascriptExports::DynamicNamespace => return Ok(Vc::cell(false)),
         EcmascriptExports::EsmExports(exports) => *exports,
     };
