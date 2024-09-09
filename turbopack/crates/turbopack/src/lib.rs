@@ -173,20 +173,17 @@ async fn apply_module_type(
                     None
                 };
                 if let Some((part, _)) = part_ref {
-                    match &*part {
-                        ModulePart::Evaluation => {
-                            // Skip the evaluation part if the module is marked as side effect free.
-                            let side_effect_free_packages =
-                                module_asset_context.side_effect_free_packages();
+                    if let ModulePart::Evaluation = &*part {
+                        // Skip the evaluation part if the module is marked as side effect free.
+                        let side_effect_free_packages =
+                            module_asset_context.side_effect_free_packages();
 
-                            if *module
-                                .is_marked_as_side_effect_free(side_effect_free_packages)
-                                .await?
-                            {
-                                return Ok(ProcessResult::Ignore.cell());
-                            }
+                        if *module
+                            .is_marked_as_side_effect_free(side_effect_free_packages)
+                            .await?
+                        {
+                            return Ok(ProcessResult::Ignore.cell());
                         }
-                        _ => {}
                     }
                 }
 
