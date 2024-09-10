@@ -192,7 +192,8 @@ impl EcmascriptChunkItem for HmrEntryChunkItem {
         if this.force_reload {
             writeln!(
                 code,
-                "__turbopack_require__({});\nmodule.hot.dispose(() => window.location.reload());",
+                "__turbopack_require__({});\nmodule.hot.accept();\nmodule.hot.dispose(() => \
+                 window.location.reload());",
                 StringifyJs(&id)
             )?;
         } else {
